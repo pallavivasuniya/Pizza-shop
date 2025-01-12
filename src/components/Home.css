@@ -1,0 +1,80 @@
+/* Home.css */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    box-sizing: border-box; /* Ensure the full height of the page is used */
+  }
+.home-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(16, 16, 16); /* Grey background */
+    height: 100vh;
+    flex-direction: row; /* Changed to row to place text and image side by side */
+    text-align: center;
+    gap: 200px;
+  }
+  
+  .text-content {
+    margin-bottom: 20px;
+    flex: 1; /* Allow text content to take available space */
+    color: white;
+  }
+  
+  .text-content h1 {
+    font-size: 3rem; /* Make the font size larger */
+    font-weight: bold; /* Make the text bold */
+    margin-bottom: 10px;
+  }
+  
+
+  .text-content span {
+    color: yellow;
+  }
+  
+  
+  .text-content button {
+    padding: 10px 20px;
+    background-color: #e4db34;
+    color: rgb(14, 13, 13);
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 20px;  /* Increased gap from top */
+  }
+  
+  
+  .text-content button:hover {
+    background-color: #7a7372; /* Darker shade for hover effect */
+  }
+  
+ /* .image-content - Adjusting the margin and flex properties */
+.image-content {
+    margin-top: 14px; /* Adjust the margin */
+    flex: 1; /* Allow image content to take available space */
+  }
+  
+  /* Add image styles to control size and bouncing effect */
+  .image-content img {
+    width: 200px; /* Adjust width as needed */
+    height: 200px; /* Adjust height to keep the image square */
+    object-fit: cover; /* Ensure the image covers the container without stretching */
+    border-radius: 8px; /* Optional: Rounded corners */
+    
+    /* Bounce animation */
+    animation: bounce 2s ease-in-out infinite; /* Apply the bounce animation */
+  }
+  
+  /* Define the bounce animation */
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0); /* Start at original position */
+    }
+    50% {
+      transform: translateY(-20px); /* Move up by 20px at the middle of the animation */
+    }
+  }
+  
+  

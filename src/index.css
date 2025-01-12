@@ -1,0 +1,30 @@
+/* Import Tailwind's base styles */
+@tailwind base;
+
+/* Import Tailwind's component styles */
+@tailwind components;
+
+/* Import Tailwind's utility classes */
+@tailwind utilities;
+
+@layer components {
+  /* Custom Button Styles */
+  .order-button {
+    @apply mt-5 px-6 py-3 text-lg bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all transform;
+  }
+
+  .order-button:hover {
+    @apply scale-105;
+  }
+
+  /* Custom Card Styles (if needed) */
+  .custom-card {
+    @apply p-4 bg-gray-100 rounded-lg shadow-md;
+  }
+}
+
+/* App Specific Styles */
+.App-header {
+  @apply bg-gradient-to-r from-blue-500 via-purple-600 to-pink-500 text-white flex flex-col items-center justify-center;
+  min-height: 100vh;
+}
