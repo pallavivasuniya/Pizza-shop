@@ -5,6 +5,7 @@ const PizzaStages = () => {
   const [pizzas, setPizzas] = useState([]);
   const [deliveredCount, setDeliveredCount] = useState(0);
   const [orderHistory, setOrderHistory] = useState([]);
+  const [orderCounter, setOrderCounter] = useState(1); // Counter for sequential IDs
 
   const sizeTimes = {
     small: 3 * 60,
@@ -15,18 +16,22 @@ const PizzaStages = () => {
   // Add new orders from localStorage
   useEffect(() => {
     const savedOrders = JSON.parse(localStorage.getItem("orders")) || [];
-    const newOrders = savedOrders.map((order, index) => ({
-      id: `new-${Date.now()}-${index}`, // Assign a unique id with timestamp
-      size: order.size.toLowerCase(),
-      stage: "Order Placed",
-      timeSpent: 0,
-      totalTime: 0,
-      startTime: Date.now(), // Add start time for more accurate timing
-    }));
+    const newOrders = savedOrders.map((order) => {
+      const id = orderCounter; // Use the current counter value as the ID
+      setOrderCounter((prevCounter) => prevCounter + 1); // Increment the counter
+      return {
+        id,
+        size: order.size.toLowerCase(),
+        stage: "Order Placed",
+        timeSpent: 0,
+        totalTime: 0,
+        startTime: Date.now(), // Add start time for accurate timing
+      };
+    });
     setPizzas((prevPizzas) => [...prevPizzas, ...newOrders]);
     // Clear the orders from localStorage after adding them
     localStorage.removeItem("orders");
-  }, []);
+  }, [orderCounter]);
 
   // Simulate time spent in each stage
   useEffect(() => {
@@ -54,26 +59,31 @@ const PizzaStages = () => {
   const moveToNextStage = (id) => {
     setPizzas((prevPizzas) => {
       let orderDelivered = false;
-      const updatedPizzas = prevPizzas.map((pizza) => {
-        if (pizza.id === id) {
-          const nextStage = getNextStage(pizza.stage);
-          if (nextStage === "Order Picked" && pizza.stage !== "Order Picked") {
-            orderDelivered = true;
-            return null; // Remove from tracker
+      const updatedPizzas = prevPizzas
+        .map((pizza) => {
+          if (pizza.id === id) {
+            const nextStage = getNextStage(pizza.stage);
+            if (nextStage === "Order Picked" && pizza.stage !== "Order Picked") {
+              orderDelivered = true;
+              return null; // Remove from tracker
+            }
+            return {
+              ...pizza,
+              stage: nextStage,
+              timeSpent: 0,
+              startTime: Date.now(), // Reset start time for the new stage
+            };
           }
-          return { 
-            ...pizza, 
-            stage: nextStage, 
-            timeSpent: 0,
-            startTime: Date.now() // Reset start time for the new stage
-          };
-        }
-        return pizza;
-      }).filter((pizza) => pizza !== null);
+          return pizza;
+        })
+        .filter((pizza) => pizza !== null);
 
       if (orderDelivered) {
         setDeliveredCount((prev) => prev + 1);
-        setOrderHistory((prevHistory) => [...prevHistory, prevPizzas.find(p => p.id === id)]);
+        setOrderHistory((prevHistory) => [
+          ...prevHistory,
+          prevPizzas.find((p) => p.id === id),
+        ]);
       }
 
       return updatedPizzas;
@@ -161,4 +171,3 @@ const PizzaStages = () => {
 };
 
 export default PizzaStages;
-
